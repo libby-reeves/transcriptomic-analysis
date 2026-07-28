@@ -118,7 +118,7 @@ plot(hc.samples, cex=0.8)
 data.pca <- prcomp(t(data))
 data.loadings <- data.pca$x
 
-data.pca.var <- round(data.pca$sdev^2 / sum(data.pca$sdev^2)*100,2)
+data.pca.var <- round(data.pca$sdev^2 / sum(data.pca$sdev^2)*100, 2)
 plot(c(1:length(data.pca.var)), data.pca.var, type="b", xlab="# components",
      ylab="% variance", pch=21, col=1, bg=3, cex=1.5,
      main="Scree plot showing % variability explained by each eigenvalue")
@@ -146,3 +146,41 @@ legend('topleft', legend=levels(as.factor(ann$ALL.AML)),
 ```
 
 ![](golub_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+## PCA within ALL data: B-cell vs. T-cell
+
+``` r
+data.all <- data[, ann$ALL.AML=='ALL']
+
+data.all.pca <- prcomp(t(data.all))
+data.all.loadings <- data.all.pca$x
+
+data.all.pca.var <- round(data.all.pca$sdev^2 / sum(data.all.pca$sdev^2)*100, 2)
+plot(c(1:length(data.all.pca.var)), data.all.pca.var, type="b", 
+     xlab="# components", ylab="% variance", pch=21, col=1, bg=3, cex=1.5,
+     main="Scree plot showing % variability explained by each eigenvalue")
+```
+
+![](golub_files/figure-gfm/unnamed-chunk-7-1.png)<!-- -->
+
+``` r
+par(mfrow=c(3, 1))
+t.b.cell <- as.factor(ann$T.B.cell)
+
+plot(data.all.loadings[, 1], data.all.loadings[, 2], xlab='PC1', ylab='PC2',
+     pch=19, col=as.numeric(t.b.cell), main="PC2 vs. PC1")
+legend('bottomright', legend=levels(t.b.cell),
+       col=1:length(levels(t.b.cell)), pch=c(19, 19))
+
+plot(data.all.loadings[, 1], data.all.loadings[, 3], xlab='PC1', ylab='PC3',
+     pch=19, col=as.numeric(t.b.cell), main="PC3 vs. PC1")
+legend('bottomright', legend=levels(t.b.cell),
+       col=1:length(levels(t.b.cell)), pch=c(19, 19))
+
+plot(data.all.loadings[, 2], data.all.loadings[, 3], xlab='PC2', ylab='PC3',
+     pch=19, col=as.numeric(t.b.cell), main="PC3 vs. PC2")
+legend('bottomright', legend=levels(t.b.cell),
+       col=1:length(levels(t.b.cell)), pch=c(19, 19))
+```
+
+![](golub_files/figure-gfm/unnamed-chunk-8-1.png)<!-- -->
